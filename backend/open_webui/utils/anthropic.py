@@ -351,6 +351,12 @@ def convert_anthropic_to_openai_payload(anthropic_payload: dict) -> dict:
                     'function': {'name': tc.get('name', '')},
                 }
 
+    output_config = anthropic_payload.get('output_config')
+    if isinstance(output_config, dict) and output_config.get('format') is not None:
+        openai_payload['response_format'] = output_config['format']
+    elif anthropic_payload.get('output_format') is not None:
+        openai_payload['response_format'] = anthropic_payload['output_format']
+
     return openai_payload
 
 
